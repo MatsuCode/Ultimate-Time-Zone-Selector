@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Time Zone Selector</title>
+    <title>What Time Is It?</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
-    <a href="https://matsucode.me" target="_blank" rel="noopener">
-        <button data-micromodal-trigger="modal-1">go to dev portfolio</button>
-    </a>
+    <button data-micromodal-trigger="modal-1">Open Time Zone Selector</button>
 
     <div class="micromodal-slide" id="modal-1" aria-hidden="true">
-        <div class="modal__overlay" data-micromodal-close>
-            <div class="modal__container" role="dialog" aria-modal="true">
-                    <h2>ULTIMATE TIME ZONE SELECTOR</h2>
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header class="modal__header">
+                    <h2 id="modal-1-title">ULTIMATE TIME ZONE SELECTOR</h2>
+                </header>
+                <main class="modal__content">
                     <p>Choose the time zone to display:</p>
                     <select id="timezone-select">
                         <option value="local">System (local)</option>
@@ -28,20 +29,33 @@
                         <option value="Asia/Shanghai">Asia/Shanghai</option>
                         <option value="Australia/Sydney">Australia/Sydney</option>
                     </select>
+                </main>
+                <footer class="modal__footer">
                     <div class="modal-buttons">
                         <button id="apply-tz" data-micromodal-close>Apply</button>
-                        <button data-micromodal-close>Close</button>
+                        <button data-micromodal-close aria-label="Close modal">Close</button>
                     </div>
+                </footer>
             </div>
-            <div id="clock"></div>
         </div>
     </div>
-    <script src="./node_modules/dayjs/dayjs.min.js"></script>
-    <script src="./node_modules/dayjs/plugin/utc.js"></script>
-    <script src="./node_modules/dayjs/plugin/timezone.js"></script>
-    <script src="./node_modules/micromodal/dist/micromodal.min.js"></script>
+
+    <div id="clock"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/timezone.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+
     <script src="./app.js"></script>
 
+    <script>
+        // Como estamos usando CDN, precisamos ativar os plugins do Day.js manualmente no topo do seu script ou aqui
+        dayjs.extend(window.dayjs_plugin_utc);
+        dayjs.extend(window.dayjs_plugin_timezone);
+    </script>
     
 </body>
 </html>
