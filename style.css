@@ -1,0 +1,139 @@
+/* Basic page layout */
+html,body{
+	height:100%;
+	margin:0;
+}
+body{
+	font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background: linear-gradient(135deg,#0f172a 0%, #0b1220 60%);
+	color:#e6eef8;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+	padding:24px;
+	box-sizing:border-box;
+}
+
+/* Clock */
+#clock{
+	font-size:48px;
+	font-weight:600;
+	letter-spacing:1px;
+	background:rgba(255,255,255,0.03);
+	padding:18px 28px;
+	border-radius:12px;
+	box-shadow:0 6px 24px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+	text-align:center;
+	min-width:320px;
+}
+
+/* Trigger button */
+[data-micromodal-trigger]{
+	position:fixed;
+	top:20px;
+	right:20px;
+	background:linear-gradient(180deg,#2563eb,#1e40af);
+	color:#fff;
+	border:0;
+	padding:10px 14px;
+	border-radius:8px;
+	cursor:pointer;
+	box-shadow:0 6px 18px rgba(37,99,235,0.18);
+	transition:transform .12s ease, box-shadow .12s ease;
+}
+[data-micromodal-trigger]:hover{transform:translateY(-2px)}
+
+/* Micromodal overlay */
+.modal__overlay{
+	background:rgba(2,6,23,0.6);
+	backdrop-filter:blur(4px);
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+}
+
+.modal__container{
+	background:linear-gradient(180deg,#fff,#fbfdff);
+	color:#0b1220;
+	border-radius:12px;
+	padding:20px 24px;
+	width:360px;
+	max-width:90%;
+	box-shadow:0 20px 50px rgba(2,6,23,0.6);
+	transform-origin:center center;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	text-align:center;
+	animation:modal-pop .28s ease;
+}
+
+.modal__container h2{margin:0 0 8px 0;font-size:18px}
+.modal__container p{margin:0 0 12px 0;color:#334155}
+
+/* Select and buttons in modal */
+#timezone-select{
+	width:100%;
+	padding:8px 10px;
+	border-radius:8px;
+	border:1px solid #e6eef8;
+	background:#fff;
+	font-size:14px;
+	box-sizing:border-box;
+}
+
+.modal__container button{ 
+	cursor:pointer;
+	border-radius:8px;
+	padding:8px 12px;
+	border:0;
+}
+
+.modal-buttons{
+	width:100%;
+	display:flex;
+	justify-content:flex-end;
+	margin-top:12px;
+}
+
+#apply-tz{
+	background:linear-gradient(180deg,#10b981,#059669);
+	color:#fff;
+	margin-right:8px;
+}
+
+[data-micromodal-close]{
+	background:transparent;
+	color:#0b1220;
+	border:1px solid rgba(11,18,32,0.06);
+}
+
+/* clock placed below modal container */
+.modal__overlay > #clock {
+	font-size:48px;
+	font-weight:600;
+	letter-spacing:1px;
+	background:rgba(255,255,255,0.03);
+	padding:18px 28px;
+	border-radius:12px;
+	box-shadow:0 6px 24px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+	text-align:center;
+	min-width:320px;
+	margin-top:24px;
+	color:#fff;
+}
+
+/* Responsive tweaks */
+@media (max-width:420px){
+	#clock{font-size:28px;min-width:220px;padding:12px}
+	.modal__container{width:92%}
+}
+
+@keyframes modal-pop{
+	0%{transform:scale(0.8);opacity:0}
+	100%{transform:scale(1);opacity:1}
+}
+
