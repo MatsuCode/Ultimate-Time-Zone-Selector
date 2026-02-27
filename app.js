@@ -1,64 +1,66 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicializa o MicroModal (Certifique-se que o id no HTML é modal-1)
-    // O erro "MicroModal is not defined" parará de ocorrer com o CDN no HTML.
-    if (typeof MicroModal !== 'undefined') {
-        MicroModal.init({
-            onClose: modal => console.info(`${modal.id} fechado`),
-            openTrigger: 'data-micromodal-trigger',
-            closeTrigger: 'data-micromodal-close',
-            disableScroll: true
-        });
-    }
+document.addEventListener("DOMContentLoaded", () => {
 
-    // 2. Extensão do Day.js (Importante: a ordem no HTML garante que esses objetos existam aqui)
-    if (window.dayjs_plugin_utc) dayjs.extend(window.dayjs_plugin_utc);
-    if (window.dayjs_plugin_timezone) dayjs.extend(window.dayjs_plugin_timezone);
+    // Plugins do DayJS
+    dayjs.extend(window.dayjs_plugin_utc);
+    dayjs.extend(window.dayjs_plugin_timezone);
 
-    const TZ_KEY = 'preferredTimezone';
-    const defaultTZ = 'local';
+    const TZ_KEY = "preferredTimezone";
+    const defaultTZ = "local";
 
-    const tzSelect = document.getElementById('timezone-select');
-    const applyBtn = document.getElementById('apply-tz');
-    const clockElement = document.getElementById('clock');
+    const modal = document.getElementById("tz-modal");
+    const openBtn = document.getElementById("open-modal");
+    const closeBtn = document.getElementById("close-modal");
+    const applyBtn = document.getElementById("apply-tz");
+    const tzSelect = document.getElementById("timezone-select");
+    const clockElement = document.getElementById("clock");
 
-    // 3. Configuração Inicial do Select
-    if (tzSelect) {
-        const saved = localStorage.getItem(TZ_KEY) || defaultTZ;
-        tzSelect.value = saved;
-    }
+    // Carregar timezone salva
+    const savedTZ = localStorage.getItem(TZ_KEY) || defaultTZ;
+    tzSelect.value = savedTZ;
 
-    // 4. Função do Relógio (Otimizada)
     function atualizarRelogio() {
-        if (!clockElement) return;
-
         const tz = localStorage.getItem(TZ_KEY) || defaultTZ;
         let now;
 
         try {
-            if (tz === 'local') {
+            if (tz === "local") {
                 now = dayjs();
             } else {
-                // dayjs.tz é fornecido pelo plugin de timezone
                 now = dayjs().tz(tz);
             }
-            
-            clockElement.innerText = now.format('DD/MM/YYYY HH:mm:ss');
-        } catch (e) {
-            console.error("Erro ao processar fuso horário:", e);
-            clockElement.innerText = dayjs().format('DD/MM/YYYY HH:mm:ss');
+
+            clockElement.innerText = now.format("DD/MM/YYYY HH:mm:ss");
+
+        } catch (err) {
+            console.error("Erro timezone:", err);
+            clockElement.innerText = dayjs().format("DD/MM/YYYY HH:mm:ss");
         }
     }
 
-    // 5. Evento de Clique
-    if (applyBtn && tzSelect) {
-        applyBtn.addEventListener('click', () => {
-            localStorage.setItem(TZ_KEY, tzSelect.value);
-            atualizarRelogio();
-            // O MicroModal fecha automaticamente devido ao atributo data-micromodal-close no HTML
-        });
-    }
+    // Abrir modal
+    openBtn.addEventListener("click", () => {
+        modal.classList.add("active");
+    });
 
-    // 6. Loop do Relógio
+    // Fechar modal
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    // Aplicar timezone
+    applyBtn.addEventListener("click", () => {
+        localStorage.setItem(TZ_KEY, tzSelect.value);
+        atualizarRelogio();
+        modal.classList.remove("active");
+    });
+
+    // Fechar clicando fora
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+
     atualizarRelogio();
     setInterval(atualizarRelogio, 1000);
 });
